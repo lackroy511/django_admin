@@ -1,0 +1,9 @@
+{
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}"
+    },
+    "cSpell.words": [
+        "xigh"
+    ]
+}

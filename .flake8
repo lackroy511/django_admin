@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+extend-ignore =
+	F401,
+	W293,
+	W291,
+	R504,
+	B008,
+	C812,
+	F403
+max-line-length = 119
+inline-quotes = single
+multiline-quotes = single
+docstring-quotes = """

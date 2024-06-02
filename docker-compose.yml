@@ -1,0 +1,34 @@
+services:
+  django_admin:
+    container_name: django
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "9100:9100"
+    command: tail -f /dev/null
+    volumes:
+      - .:/root/project
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  postgres:
+    image: postgres:latest
+    container_name: postgresql
+    env_file:
+      - .env
+    ports:
+      - "5430:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data/movies
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+volumes:
+  pg_data:
