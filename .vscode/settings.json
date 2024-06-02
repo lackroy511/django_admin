@@ -5,5 +5,16 @@
     },
     "cSpell.words": [
         "xigh"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "postgres",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "movies",
+            "username": "pc",
+            "database": "movies"
+        }
     ]
 }

@@ -2,38 +2,48 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
+import uuid
 
 
 class Genre(TimeStampedModel):
     class Meta:
         verbose_name = _('жанр')
         verbose_name_plural = _('жанры')
-
-    name = models.CharField(_('название'), max_length=255)
-    description = models.CharField(_('описание'), max_length=50)
-
-    def __str__(self):
-        return self.name
+        
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
 
 
-class FilmWorkType(models.TextChoices):
-    MOVIE = 'movie', _('фильм')
-    TV_SHOW = 'tv_show', _('шоу')
-
+class Person(TimeStampedModel):
+    class Meta:
+        verbose_name = _('персона')
+        verbose_name_plural = _('персоны')
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, unique=True)
+    birth_date = models.DateField(_('Дата рождения'), auto_now=False, blank=True, null=True)
+    
 
 class FilmWork(TimeStampedModel):
     class Meta:
-        verbose_name = _('кинопроизведение')
-        verbose_name_plural = _('кинопроизведения')
-
-    title = models.CharField(_('название'), max_length=255)
-    description = models.TextField(_('описание'), blank=True)
-    creation_date = models.DateField(_('дата создания фильма'), blank=True)
-    certificate = models.TextField(_('сертификат'), blank=True)
-    file_path = models.FileField(_('файл'), upload_to='film_works/', blank=True)
-    rating = models.FloatField(_('рейтинг'), validators=[MinValueValidator(0)], blank=True)
-    type = models.CharField(_('тип'), max_length=20, choices=FilmWorkType.choices)
-    genres = models.ManyToManyField(Genre)
-
-    def __str__(self):
-        return self.title
+        verbose_name = _('фильм')
+        verbose_name_plural = _('фильмы')
+        
+    class FilmType(models.TextChoices):
+        MOVIE = 'movie', _('фильм')
+        TV_SHOW = 'tv_show', _('ТВ шоу')
+        SERIES = 'series', _('сериал')
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.TextField(_('Название'))
+    description = models.TextField(_('Описание'), null=True, blank=True)
+    creation_date = models.DateField(_('Дата создания'), auto_now=False, auto_now_add=False)
+    age_rating = models.CharField(_('Возрастной рейтинг'), max_length=10, null=True, blank=True)
+    film_type = models.TextField(_('Тип'), choices=FilmType.choices, default=FilmType.MOVIE)
+    file_path = models.TextField(_('Путь к файлу'), null=True, blank=True)
+    genre = models.ManyToManyField(Genre, verbose_name=_('жанр'), related_name='genre')
+    director = models.ManyToManyField(Person, verbose_name=_('режиссер'), related_name='film_director')
+    actor = models.ManyToManyField(Person, verbose_name=_('актер'), related_name='film_actor')
+    writer = models.ManyToManyField(Person, verbose_name=_('сценарист'), related_name='film_writer')
+    test_field = models.TextField(_('qwe'), null=True, blank=True)
