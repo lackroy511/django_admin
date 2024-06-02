@@ -4,6 +4,7 @@
         "PYTHONPATH": "${workspaceFolder}"
     },
     "cSpell.words": [
+        "filmwork",
         "xigh"
     ],
     "sqltools.connections": [
